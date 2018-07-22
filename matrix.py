@@ -21,8 +21,8 @@ class Matrix:
         self.nrows = nrows
         self.ncols = ncols
 
-    # return value to another matrix 
-    def get(self):
+    # return value to another matrix (B)
+    def re(self):
         return self.R
 
     def add(self, m):
@@ -117,8 +117,8 @@ class Matrix:
 
 A = Matrix('A',5,7)
 B = Matrix('B',7,5)
-A.add(B.get())
-A.sub(B.get())
-A.mul(B.get())
+A.add(B.re())
+A.sub(B.re())
+A.mul(B.re())
 A.transpose()
 A.display()
