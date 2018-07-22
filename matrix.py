@@ -2,143 +2,123 @@ import random
 
 class Matrix:
 
-    def __init__(self, nrowsA, ncolsA, nrowsB, ncolsB):
+    def __init__(self, name, nrows, ncols):
         """Construct a (nrows X ncols) matrix"""
-       #construct A[]
-        A = []
-        nrowsA = int(input("Enter A matrix's rows:"))
-        ncolsA = int(input("Enter A matrix's cols:"))
-        self.nrowsA = nrowsA
-        self.ncolsA = ncolsA
-        for i in range (0, self.nrowsA):
-            A.append([])
-            for j in range(0, self.ncolsA):
-                A[i].append(random.randint(0,9))
-        print("Matrix A:")
-        for i in range(0, self.nrowsA):
-            for j in range(0, self.ncolsA):
-                print(A[i][j], end=" ")
-            print()
-        
-        #construct B[]
-        B = []
-        nrowsB = int(input("Enter B matrix's rows:"))
-        ncolsB = int(input("Enter B matrix's cols:"))
-        self.nrowsB = nrowsB
-        self.ncolsB = ncolsB
-        for i in range (0, self.nrowsB):
-            B.append([])
-            for j in range(0, self.ncolsB):
-                B[i].append(random.randint(0,9))
-        print("Matrix B:")
-        for i in range(0, self.nrowsB):
-            for j in range(0, self.ncolsB):
-                print(B[i][j], end=" ")
-            print()
-        
-        #renew A[]&B[]
-        self.A = A
-        self.B = B
-        pass
+        # define an new matrix R
+        R = []
+        print("Enter ", name, " matrix's rows: ", nrows)
+        print("Enter ", name, " matrix's cols: ", ncols)
+        for i in range(0, nrows):
+            R.append([])
+            for j in range(0, ncols):
+                R[i].append(random.randint(0,9))
+        for i in range(0, nrows):
+            for j in range(0, ncols):
+                print(R[i][j],end=' ')
+            print('')
+        print('')
+        self.R = R
+        self.nrows = nrows
+        self.ncols = ncols
+
+    # return value to another matrix 
+    def get(self):
+        return self.R
 
     def add(self, m):
         """return a new Matrix object after summation"""
         C = []
-        if self.nrowsA == self.nrowsB and self.ncolsA == self.ncolsB :
-            for i in range(0, self.nrowsA):
+        if self.nrows == len(m) and self.ncols == len(m[0]):
+            for i in range(0, self.nrows):
                 C.append([])
-                for j in range(0, self.ncolsA):
-                    C[i].append(self.A[i][j] + self.B[i][j])
+                for j in range(0, self.ncols):
+                    C[i].append(self.R[i][j] + m[i][j])
         self.C = C
-        pass
+        self.m_add = m
 
     def sub(self, m):
         """return a new Matrix object after substraction"""
         D = []
-        if self.nrowsA == self.nrowsB and self.ncolsA == self.ncolsB :
-            for i in range(0, self.nrowsA):
+        if self.nrows == len(m) and self.ncols == len(m[0]):
+            for i in range(0, self.nrows):
                 D.append([])
-                for j in range(0, self.ncolsA):
-                    D[i].append(self.A[i][j] + self.B[i][j])
+                for j in range(0, self.ncols):
+                    D[i].append(self.R[i][j] - m[i][j])
         self.D = D
+        self.m_sub = m
         pass
 
     def mul(self, m):
         """return a new Matrix object after multiplication"""
         E = []
-        if self.ncolsA == self.nrowsB:
-            for i in range(0, self.nrowsA):
+        if self.nrows == len(m[0]) and self.ncols == len(m):
+            for i in range(0, self.nrows):
                 E.append([])
-                for j in range (0, self.ncolsB):
+                for j in range(0, len(m[0])):
                     E[i].append(0)
-                    for k in range(0, self.ncolsA):
-                        E[i][j] += self.A[i][k]*self.B[k][j]
+                    for k in range(0, len(m[0])):
+                        E[i][j] += self.R[i][k] * m[k][j]
         self.E = E
+        self.m_mul = m
         pass
 
     def transpose(self):
         """return a new Matrix object after transpose"""
         F = []
-        E = self.E
-        if self.ncolsA == self.nrowsB:
-            for i in range(0, self.nrowsA):
+        if self.nrows == len(self.m_mul[0]) and self.ncols == len(self.m_mul):
+            for i in range(0, self.nrows):
                 F.append([])
-                for j in range(0, self.ncolsB):
+                for j in range(0, len(self.m_mul[0])):
                     F[i].append(self.E[j][i])
         self.F = F
         pass
-    
+
     def display(self):
         """Display the content in the matrix"""
-        # add
-        print("========== A + B ==========")
-        C = self.C
-        if self.nrowsA == self.nrowsB and self.ncolsA == self.ncolsB :
-            for i in range(0, self.nrowsA):
-                for j in range(0, self.ncolsA):
-                    print(C[i][j], end=" ")
-                print()    
-        else:
-            print("Matrixs' size should be in the same size")
         
-        # sub
-        print("========== A - B ==========")
-        D = self.D
-        if self.nrowsA == self.nrowsB and self.ncolsA == self.ncolsB :
-            for i in range(0, self.nrowsA):
-                for j in range(0, self.ncolsA):
-                    print(D[i][j], end=" ")
-                print()    
+        print('========== A + B ==========')
+        if self.nrows == len(self.m_add) and self.ncols == len(self.m_add[0]):
+            for i in range(0, self.nrows):
+                for j in range(0, self.ncols):
+                    print(self.C[i][j],end=' ')
+                print('')
+            print('')
         else:
-            print("Matrixs' size should be in the same size")
+            print("Matrixs' size should be in the same size.")      
         
-        # mul
-        print("========== A * B ==========")
-        E = self.E
-        if self.ncolsA == self.ncolsB :
-            for i in range(0, self.nrowsA):
-                for j in range(0, self.ncolsA):
-                    print(E[i][j], end=" ")
-                print()    
+        print('========== A - B ==========')
+        if self.nrows == len(self.m_sub) and self.ncols == len(self.m_sub[0]):
+            for i in range(0, self.nrows):
+                for j in range(0, self.ncols):
+                    print(self.D[i][j],end=' ')
+                print('')
+            print('')
         else:
-            print("Matrixs' size is wrong")
+            print("Matrixs' size should be in the same size.") 
 
-        #transpose
-        print("========== A * B transpose ==========")
-        F = self.F
-        if self.ncolsA == self.ncolsB :
-            for i in range(0, self.ncolsA):
-                for j in range(0, self.nrowsA):
-                    print(F[i][j], end=" ")
-                print()    
+        print('========== A * B ==========')
+        if self.nrows == len(self.m_mul[0]) and self.ncols == len(self.m_mul):
+            for i in range(0, self.nrows):
+                for j in range(0, len(self.m_mul[0])):
+                    print(self.E[i][j],end=' ')
+                print('')
+            print('')
         else:
-            print("Matrixs' size is wrong")
-                
-        pass
+            print("Matrixs' size should be in the same size.") 
+        
+        print('========== the transpose of A * B ==========')
+        if self.nrows == len(self.m_mul[0]) and self.ncols == len(self.m_mul):
+            for i in range(0, self.nrows):
+                for j in range(0, len(self.m_mul[0])):
+                    print(self.F[i][j], end=' ')
+                print('')
+        else:
+            print("Matrixs' size should be in the same size.") 
 
-R = Matrix(1, 1, 1, 1)
-R.add(1)
-R.sub(1)
-R.mul(1)
-R.transpose()
-R.display()
+A = Matrix('A',5,7)
+B = Matrix('B',7,5)
+A.add(B.get())
+A.sub(B.get())
+A.mul(B.get())
+A.transpose()
+A.display()
